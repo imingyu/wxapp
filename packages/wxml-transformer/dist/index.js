@@ -1,20 +1,32 @@
 'use strict';
 
-var each = (arr, cb) => {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+var each = function each(arr, cb) {
     if (arr && arr.length && arr.length > 0) {
-        for (let i = 0; i < arr.length; i++) {
+        for (var i = 0; i < arr.length; i++) {
             cb(arr[i], i);
         }
     } else if (arr) {
-        for (let i in arr) {
-            if (i != 'length') cb(arr[i], i);
+        for (var _i in arr) {
+            if (_i != 'length') cb(arr[_i], _i);
         }
     }
 };
 
 //jQuery版extend函数
-var extend = function () {
-    var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {},
+var extend = function extend() {
+    var options,
+        name,
+        src,
+        copy,
+        copyIsArray,
+        clone,
+        target = arguments[0] || {},
         i = 1,
         length = arguments.length,
         deep = false,
@@ -25,54 +37,53 @@ var extend = function () {
         trim = String.prototype.trim,
         indexOf = Array.prototype.indexOf,
         class2type = {
-            "[object Boolean]": "boolean",
-            "[object Number]": "number",
-            "[object String]": "string",
-            "[object Function]": "function",
-            "[object Array]": "array",
-            "[object Date]": "date",
-            "[object RegExp]": "regexp",
-            "[object Object]": "object"
-        },
+        "[object Boolean]": "boolean",
+        "[object Number]": "number",
+        "[object String]": "string",
+        "[object Function]": "function",
+        "[object Array]": "array",
+        "[object Date]": "date",
+        "[object RegExp]": "regexp",
+        "[object Object]": "object"
+    },
         jQuery = {
-            isFunction: function (obj) {
-                return jQuery.type(obj) === "function"
-            },
-            isArray: Array.isArray ||
-            function (obj) {
-                return jQuery.type(obj) === "array"
-            },
-            isWindow: function (obj) {
-                return obj != null && obj == obj.window
-            },
-            isNumeric: function (obj) {
-                return !isNaN(parseFloat(obj)) && isFinite(obj)
-            },
-            type: function (obj) {
-                return obj == null ? String(obj) : class2type[toString.call(obj)] || "object"
-            },
-            isPlainObject: function (obj) {
-                if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
-                    return false
-                }
-                try {
-                    if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
-                        return false
-                    }
-                } catch (e) {
-                    return false
-                }
-                var key;
-                for (key in obj) { }
-                return key === undefined || hasOwn.call(obj, key)
+        isFunction: function isFunction(obj) {
+            return jQuery.type(obj) === "function";
+        },
+        isArray: Array.isArray || function (obj) {
+            return jQuery.type(obj) === "array";
+        },
+        isWindow: function isWindow(obj) {
+            return obj != null && obj == obj.window;
+        },
+        isNumeric: function isNumeric(obj) {
+            return !isNaN(parseFloat(obj)) && isFinite(obj);
+        },
+        type: function type(obj) {
+            return obj == null ? String(obj) : class2type[toString.call(obj)] || "object";
+        },
+        isPlainObject: function isPlainObject(obj) {
+            if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
+                return false;
             }
-        };
+            try {
+                if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
+                    return false;
+                }
+            } catch (e) {
+                return false;
+            }
+            var key;
+            for (key in obj) {}
+            return key === undefined || hasOwn.call(obj, key);
+        }
+    };
     if (typeof target === "boolean") {
         deep = target;
         target = arguments[1] || {};
         i = 2;
     }
-    if (typeof target !== "object" && !jQuery.isFunction(target)) {
+    if ((typeof target === "undefined" ? "undefined" : _typeof(target)) !== "object" && !jQuery.isFunction(target)) {
         target = {};
     }
     if (length === i) {
@@ -85,7 +96,7 @@ var extend = function () {
                 src = target[name];
                 copy = options[name];
                 if (target === copy) {
-                    continue
+                    continue;
                 }
                 if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)))) {
                     if (copyIsArray) {
@@ -112,7 +123,7 @@ var extend = function () {
  */
 var JSDOM = require('jsdom').JSDOM;
 
-var elementToObject = (element) => {
+var elementToObject = function elementToObject(element) {
     var result;
     if (element.nodeType != 1) {
         result = element.nodeValue;
@@ -123,12 +134,12 @@ var elementToObject = (element) => {
         };
         result.tag = (element.nodeName || element.tagName).toLowerCase();
         if (element.attributes && element.attributes.length > 0) {
-            each(element.attributes, item => {
+            each(element.attributes, function (item) {
                 result.props[item.name] = item.value;
             });
         }
         if (element.childNodes && element.childNodes.length > 0) {
-            each(element.childNodes, item => {
+            each(element.childNodes, function (item) {
                 result.children.push(elementToObject(item));
             });
         }
@@ -136,16 +147,16 @@ var elementToObject = (element) => {
     return result;
 };
 
-var toObject = (wxmlContent) => {
+var toObject = function toObject(wxmlContent) {
     var result = [];
     var dom = new JSDOM(wxmlContent);
-    each(dom.window.document.body.children, item => {
+    each(dom.window.document.body.children, function (item) {
         result.push(elementToObject(item));
     });
     return result;
 };
 
-const defaultTransformOptions = {
+var defaultTransformOptions = {
     mapping: {
         block: 'div',
         page: 'div',
@@ -159,20 +170,20 @@ const defaultTransformOptions = {
         progress: 'div',
         button: 'button',
         'checkbox-group': 'div',
-        checkbox: (element, helper) => {
-            return `<input type="checkbox"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        checkbox: function checkbox(element, helper) {
+            return "<input type=\"checkbox\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
         },
         form: 'form',
         input: 'input',
         label: 'label',
         picker: 'div',
         'picker-view': 'div',
-        radio: (element, helper) => {
-            return `<input type="radio"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        radio: function radio(element, helper) {
+            return "<input type=\"radio\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
         },
         slider: 'div',
-        switch: (element, helper) => {
-            return `<input type="checkbox"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        switch: function _switch(element, helper) {
+            return "<input type=\"checkbox\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
         },
         textarea: 'textarea',
         audio: 'object',
@@ -189,22 +200,22 @@ const defaultTransformOptions = {
  * @author imingyu<mingyuhisoft@163.com>
  * @date 2017-6-27
  */
-var propsStringify = (props) => {
+var propsStringify = function propsStringify(props) {
     var html = "";
-    each(props, (value, prop) => {
-        html += ` ${prop}="${value}"`;
+    each(props, function (value, prop) {
+        html += ' ' + prop + '="' + value + '"';
     });
     return html;
 };
 
-var childrenStringify = (children, options) => {
-    return (children || []).map(item => {
+var childrenStringify = function childrenStringify(children, options) {
+    return (children || []).map(function (item) {
         return elementStringify(item, options);
     }).join('');
 };
 
-var createElement = (tagName, propsStr, innerHtml) => {
-    return `<${tagName}${propsStr}>${innerHtml}</${tagName}>`;
+var createElement = function createElement(tagName, propsStr, innerHtml) {
+    return '<' + tagName + propsStr + '>' + innerHtml + '</' + tagName + '>';
 };
 
 var defaultHelper = {
@@ -213,7 +224,7 @@ var defaultHelper = {
     elementStringify: elementStringify
 };
 
-var elementStringify = (elementSpec, options) => {
+var elementStringify = function elementStringify(elementSpec, options) {
     if (typeof elementSpec === 'string') return elementSpec;
     var elementHtml = "",
         wxmlTagName = elementSpec.tag;
@@ -232,20 +243,20 @@ var elementStringify = (elementSpec, options) => {
     return elementHtml;
 };
 
-var toHtml = (wxmlContent, options) => {
+var toHtml = (function (wxmlContent, options) {
     options = options || {};
     options = extend(true, {}, defaultTransformOptions, options);
     var html = "",
         wxmlObject = toObject(wxmlContent);
-    each(wxmlObject, item => {
+    each(wxmlObject, function (item) {
         html += elementStringify(item, options);
     });
     return html;
-};
+});
 
 var index = {
-    toObject,
-    toHtml
+    toObject: toObject,
+    toHtml: toHtml
 };
 
 module.exports = index;
