@@ -8,12 +8,16 @@
         "test": "mocha test/index.js"
     },
     "author": "mingyuhisoft@163.com",
-    "license": "ISC",
+    "license": "BSD 2-Clause",
     "dependencies": {
         "jsdom": "^11.0.0"
     },
     "devDependencies": {
         "chai": "^4.0.2",
         "rollup-plugin-node-resolve": "^3.0.0"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/imingyu/wxapp/issues"
+    },
+    "homepage": "https://github.com/imingyu/wxapp/tree/master/packages/wxml-transformer"
 }

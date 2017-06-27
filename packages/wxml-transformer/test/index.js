@@ -13,8 +13,8 @@ describe('test wxml-transformer', function () {
             assert.isTrue(html == '<div id="box">{{123}}</div>', `toHtml转换有问题，转换结果=${html}`);
         });
 
-        var content = fs.readFileSync(__dirname+'/1.wxml', 'utf8');
+        /*var content = fs.readFileSync(__dirname+'/1.wxml', 'utf8');
         var html = transformer.toHtml(content);
-        fs.writeFile(__dirname + '/1.result.html', html);
+        fs.writeFile(__dirname + '/1.result.html', html);*/
     });
 });
