@@ -1,0 +1,6 @@
+node_modules
+.gitignore
+test
+src
+rollup.config.js
+npm-debug.log

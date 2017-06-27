@@ -1,0 +1,19 @@
+{
+    "name": "wxml-transformer",
+    "version": "0.1.0",
+    "description": "将微信小程序的wxml代码转换成js object或html片段",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "rollup -c rollup.config.js",
+        "test": "mocha test/index.js"
+    },
+    "author": "mingyuhisoft@163.com",
+    "license": "ISC",
+    "dependencies": {
+        "jsdom": "^11.0.0"
+    },
+    "devDependencies": {
+        "chai": "^4.0.2",
+        "rollup-plugin-node-resolve": "^3.0.0"
+    }
+}

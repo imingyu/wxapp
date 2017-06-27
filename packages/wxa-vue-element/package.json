@@ -1,0 +1,11 @@
+{
+  "name": "wxa-vue-element",
+  "version": "0.1.0",
+  "description": "以vue组件的方式实现微笑小程序的标签/组件，并且保持API一致",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mingyuhisoft@163.com",
+  "license": "BSD 3-Clause License"
+}
