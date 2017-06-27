@@ -158,15 +158,22 @@ const defaultTransformOptions = {
         text: 'span',
         progress: 'div',
         button: 'button',
-        checkbox: 'input',
+        'checkbox-group': 'div',
+        checkbox: (element, helper) => {
+            return `<input type="checkbox"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        },
         form: 'form',
         input: 'input',
         label: 'label',
         picker: 'div',
         'picker-view': 'div',
-        radio: 'object',
+        radio: (element, helper) => {
+            return `<input type="radio"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        },
         slider: 'div',
-        switch: 'input',
+        switch: (element, helper) => {
+            return `<input type="checkbox"${helper.propsStringify(element.props)} />` + (element.children && element.children.length > 0 ? `${helper.childrenStringify(element.children)}` : '');
+        },
         textarea: 'textarea',
         audio: 'object',
         image: 'img',
@@ -182,7 +189,7 @@ const defaultTransformOptions = {
  * @author imingyu<mingyuhisoft@163.com>
  * @date 2017-6-27
  */
-var propStringify = (props) => {
+var propsStringify = (props) => {
     var html = "";
     each(props, (value, prop) => {
         html += ` ${prop}="${value}"`;
@@ -192,7 +199,7 @@ var propStringify = (props) => {
 
 var childrenStringify = (children, options) => {
     return (children || []).map(item => {
-        return toHtml(item, options);
+        return elementStringify(item, options);
     }).join('');
 };
 
@@ -200,39 +207,45 @@ var createElement = (tagName, propsStr, innerHtml) => {
     return `<${tagName}${propsStr}>${innerHtml}</${tagName}>`;
 };
 
-var toHtml = (elementSpec, options) => {
+var defaultHelper = {
+    propsStringify: propsStringify,
+    childrenStringify: childrenStringify,
+    elementStringify: elementStringify
+};
+
+var elementStringify = (elementSpec, options) => {
     if (typeof elementSpec === 'string') return elementSpec;
     var elementHtml = "",
         wxmlTagName = elementSpec.tag;
     if (options.mapping && options.mapping[wxmlTagName]) {
         var transform = options.mapping[wxmlTagName];
         if (typeof transform === 'string') {
-            elementHtml += createElement(transform, propStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
+            elementHtml += createElement(transform, propsStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
         } else if (typeof transform === 'function') {
-            elementHtml += transform(elementSpec);
+            elementHtml += transform(elementSpec, defaultHelper);
         } else {
-            elementHtml += createElement(wxmlTagName, propStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
+            elementHtml += createElement(wxmlTagName, propsStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
         }
     } else {
-        elementHtml += createElement(wxmlTagName, propStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
+        elementHtml += createElement(wxmlTagName, propsStringify(elementSpec.props), childrenStringify(elementSpec.children, options));
     }
     return elementHtml;
 };
 
-var toHtml$1 = (wxmlContent, options) => {
+var toHtml = (wxmlContent, options) => {
     options = options || {};
     options = extend(true, {}, defaultTransformOptions, options);
     var html = "",
         wxmlObject = toObject(wxmlContent);
     each(wxmlObject, item => {
-        html += toHtml(item, options);
+        html += elementStringify(item, options);
     });
     return html;
 };
 
 var index = {
     toObject,
-    toHtml: toHtml$1
+    toHtml
 };
 
 module.exports = index;
