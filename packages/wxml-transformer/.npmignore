@@ -1,9 +1,0 @@
-node_modules
-.gitignore
-test
-src
-rollup.config.js
-npm-debug.log
-1.wxml
-1.result.html
-.travis.yml
